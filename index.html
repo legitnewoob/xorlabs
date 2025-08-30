@@ -21,6 +21,8 @@
             justify-content: center;
             overflow: hidden;
             position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         /* Animated background grid */
@@ -177,20 +179,97 @@
         
         /* Responsive design */
         @media (max-width: 768px) {
-            .logo {
-                font-size: 2.5rem;
-            }
-            
-            .tagline {
-                font-size: 1.2rem;
-            }
-            
-            .description {
-                font-size: 1rem;
+            body {
+                overflow-y: auto;
+                overflow-x: hidden;
+                min-height: 100vh;
+                padding: 1rem 0;
             }
             
             .container {
                 padding: 1rem;
+                min-height: calc(100vh - 2rem);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+                margin-bottom: 1.5rem;
+                line-height: 1.1;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+                margin-bottom: 1.5rem;
+                line-height: 1.3;
+            }
+            
+            .description {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+                line-height: 1.5;
+                padding: 0 0.5rem;
+            }
+            
+            .cta {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+            
+            .grid-background {
+                background-size: 30px 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.75rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .description {
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+                padding: 0 0.25rem;
+            }
+            
+            .cta {
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+            }
+            
+            .grid-background {
+                background-size: 25px 25px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .logo {
+                font-size: 1.75rem;
+            }
+            
+            .tagline {
+                font-size: 0.95rem;
+            }
+            
+            .description {
+                font-size: 0.85rem;
+                line-height: 1.4;
+            }
+            
+            .cta {
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -230,11 +309,28 @@
             }, 8000);
         }
         
+        // Add touch-friendly interactions for mobile
+        if ('ontouchstart' in window) {
+            document.querySelector('.logo').addEventListener('touchstart', function() {
+                this.style.transform = 'scale(1.05)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            
+            document.querySelector('.logo').addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+        
+        // Reduce particles on mobile for better performance
+        const isMobile = window.innerWidth <= 768;
+        const particleInterval = isMobile ? 1000 : 500;
+        const maxParticles = isMobile ? 5 : 10;
+        
         // Generate particles periodically
-        setInterval(createParticle, 500);
+        setInterval(createParticle, particleInterval);
         
         // Initial burst of particles
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < maxParticles; i++) {
             setTimeout(createParticle, i * 100);
         }
         
